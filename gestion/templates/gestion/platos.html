@@ -1,25 +1,56 @@
-{% extends 'gestion/base.html' %}
+{% extends 'gestion/base.html' %} {% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2>Menú de Platos</h2>
+    <a href="{% url 'crear_plato' %}" class="btn-auth" style="text-decoration: none; padding: 10px 20px; width: auto; margin: 0;">
+        AGREGAR PLATO
+    </a>
+</div>
 
-{% block content %}
-<h2>Platos</h2>
+{% if messages %} {% for message in messages %}
+<div style="padding: 10px; margin-bottom: 20px; background-color: #d4edda; color: #155724; border-radius: 5px; border: 1px solid #c3e6cb;">
+    {{ message }}
+</div>
+{% endfor %} {% endif %}
+
 <table>
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Descripción</th>
-        <th>Precio</th>
-        <th>Categoría</th>
-        <th>Disponible</th>
-    </tr>
-    {% for plato in platos %}
-    <tr>
-        <td>{{ plato.id }}</td>
-        <td>{{ plato.nombre_plato }}</td>
-        <td>{{ plato.descripcion }}</td>
-        <td>{{ plato.precio }}</td>
-        <td>{{ plato.categoria }}</td>
-        <td>{{ plato.disponible }}</td>
-    </tr>
-    {% endfor %}
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Categoría</th>
+            <th>Estado</th>
+            <th style="text-align: center;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for plato in platos %}
+        <tr>
+            <td><strong>#{{ plato.id }}</strong></td>
+            <td><strong>{{ plato.nombre_plato }}</strong></td>
+            <td>{{ plato.descripcion|truncatechars:40 }}</td>
+            <td><span style="color: #27ae60; font-weight: bold;">${{ plato.precio }}</span></td>
+            <td>{{ plato.categoria }}</td>
+            <td>
+                {% if plato.disponible %}
+                <span class="badge badge-disponible">Disponible</span> {% else %}
+                <span class="badge badge-ocupada">Agotado</span> {% endif %}
+            </td>
+            <td style="text-align: center;">
+                <a href="{% url 'editar_plato' plato.id %}" style="color: #f39c12; text-decoration: none; font-weight: bold; margin-right: 15px;">✏️ Editar</a>
+                <a href="{% url 'eliminar_plato' plato.id %}" style="color: #c0392b; text-decoration: none; font-weight: bold;">🗑️ Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7" style="text-align: center; padding: 20px; color: #666;">No hay platos registrados.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
+
+<div style="margin-top: 20px;">
+    <a href="{% url 'inicio' %}" style="text-decoration: none; color: var(--texto);"> Volver al Inicio</a>
+</div>
 {% endblock %}

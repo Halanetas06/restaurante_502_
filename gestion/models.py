@@ -134,4 +134,3 @@ class Factura(models.Model):
 
     def __str__(self):
         return f"Factura {self.id} - Orden {self.orden.id}"
-

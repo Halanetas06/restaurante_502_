@@ -1,0 +1,23 @@
+{% extends 'gestion/base.html' %} {% block content %}
+<div class="auth-wrapper" style="min-height: auto; padding: 40px 0;">
+    <div class="auth-container" style="max-width: 500px; border-top: 5px solid var(--secundario);">
+        <h2 style="color: var(--secundario);">Confirmar Eliminación</h2>
+        <p style="margin: 20px 0; font-size: 1.1rem;">
+            ¿Estás seguro de que deseas eliminar al {{ tipo|default:"registro" }}
+            <strong>{{ objeto.nombre }}</strong>?
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button type="submit" class="btn-auth" style="background-color: var(--secundario); margin: 0; width: auto; padding: 12px 30px;">
+                    SÍ, ELIMINAR
+                </button>
+                <a href="{% url url_cancelar|default:'inicio' %}" class="btn-auth" style="background-color: #ccc; text-decoration: none; margin: 0; width: auto; padding: 12px 30px; display: flex; align-items: center;">
+                    CANCELAR
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

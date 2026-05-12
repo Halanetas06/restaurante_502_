@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pasta La Vista - Registro</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-container">
+            <h2>Crear Cuenta</h2>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div style="text-align: left; margin-bottom: 15px;">
+                    <label for="id_username"><strong>Nombre de usuario:</strong></label> {{ form.username }} {% if form.username.help_text %}
+                    <small class="helptext">Requerido. 150 caracteres o menos. Letras, dígitos y @/./+/-/_ únicamente.</small> {% endif %}
+                </div>
+
+                <div style="text-align: left; margin-bottom: 15px;">
+                    <label for="id_password1"><strong>Contraseña:</strong></label> {{ form.password1 }}
+                    <ul class="helptext-list">
+                        <li>Tu contraseña no puede ser muy similar a tu otra información personal.</li>
+                        <li>Tu contraseña debe contener al menos 8 caracteres.</li>
+                        <li>Tu contraseña no puede ser una contraseña de uso común.</li>
+                        <li>Tu contraseña no puede ser enteramente numérica.</li>
+                    </ul>
+                </div>
+
+                <div style="text-align: left; margin-bottom: 20px;">
+                    <label for="id_password2"><strong>Confirmar contraseña:</strong></label> {{ form.password2 }}
+                    <small class="helptext">Introduce la misma contraseña que antes para verificar.</small>
+                </div>
+
+                {% if form.errors %}
+                <div class="errorlist">
+                    Por favor, corrige los errores arriba indicados.
+                </div>
+                {% endif %}
+
+                <button type="submit" class="btn-auth">REGISTRARME</button>
+            </form>
+
+            <div class="auth-footer">
+                ¿Ya tienes cuenta? <a href="{% url 'login' %}">Iniciar Sesión</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

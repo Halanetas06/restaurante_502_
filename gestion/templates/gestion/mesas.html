@@ -1,21 +1,59 @@
-{% extends 'gestion/base.html' %}
+{% extends 'gestion/base.html' %} {% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2>Gestión de Mesas</h2>
+    <a href="{% url 'crear_mesa' %}" class="btn-auth" style="text-decoration: none; padding: 10px 20px; width: auto; margin: 0;">
+        AGREGAR MESA
+    </a>
+</div>
 
-{% block content %}
-<h2>Mesas</h2>
+{% if messages %} {% for message in messages %}
+<div style="padding: 10px; margin-bottom: 20px; background-color: #d4edda; color: #155724; border-radius: 5px; border: 1px solid #c3e6cb;">
+    {{ message }}
+</div>
+{% endfor %} {% endif %}
+
 <table>
-    <tr>
-        <th>ID</th>
-        <th>Número</th>
-        <th>Capacidad</th>
-        <th>Estado</th>
-    </tr>
-    {% for mesa in mesas %}
-    <tr>
-        <td>{{ mesa.id }}</td>
-        <td>{{ mesa.numero_mesa }}</td>
-        <td>{{ mesa.capacidad }}</td>
-        <td>{{ mesa.estado_mesa }}</td>
-    </tr>
-    {% endfor %}
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Número de Mesa</th>
+            <th>Capacidad</th>
+            <th>Estado Actual</th>
+            <th style="text-align: center;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mesa in mesas %}
+        <tr>
+            <td><strong>#{{ mesa.id }}</strong></td>
+            <td>Mesa {{ mesa.numero_mesa }}</td>
+            <td>{{ mesa.capacidad }} personas</td>
+            <td>
+                {% if mesa.estado_mesa == 'Disponible' %}
+                <span class="badge badge-disponible">{{ mesa.estado_mesa }}</span> {% elif mesa.estado_mesa == 'Ocupada' %}
+                <span class="badge badge-ocupada">{{ mesa.estado_mesa }}</span> {% else %}
+                <span class="badge badge-reserva">{{ mesa.estado_mesa }}</span> {% endif %}
+            </td>
+            <td style="text-align: center;">
+                <a href="{% url 'editar_mesa' mesa.id %}" style="color: #f39c12; text-decoration: none; font-weight: bold; margin-right: 15px;">
+                    Editar
+                </a>
+                <a href="{% url 'eliminar_mesa' mesa.id %}" style="color: #c0392b; text-decoration: none; font-weight: bold;">
+                    Eliminar
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" style="text-align: center; padding: 20px; color: #666;">
+                No hay mesas registradas actualmente.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
+
+<div style="margin-top: 20px;">
+    <a href="{% url 'inicio' %}" style="text-decoration: none; color: var(--texto);"> Volver al Inicio</a>
+</div>
 {% endblock %}

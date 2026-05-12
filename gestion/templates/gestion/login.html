@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pasta La Vista - Iniciar Sesión</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-container">
+            <h2>Iniciar Sesión</h2>
+
+            {% if messages %} {% for message in messages %}
+            <p style="color: var(--secundario); font-size: 0.9rem; margin-bottom: 15px;">{{ message }}</p>
+            {% endfor %} {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div style="text-align: left; margin-bottom: 15px;">
+                    <label for="id_username"><strong>Nombre de usuario:</strong></label> {{ form.username }}
+                </div>
+
+                <div style="text-align: left; margin-bottom: 20px;">
+                    <label for="id_password"><strong>Contraseña:</strong></label> {{ form.password }}
+                </div>
+
+                {% if form.errors %}
+                <div class="errorlist" style="margin-bottom: 15px;">
+                    Usuario o contraseña incorrectos. Por favor, intente de nuevo.
+                </div>
+                {% endif %}
+
+                <button type="submit" class="btn-auth">ENTRAR</button>
+            </form>
+
+            <div class="auth-footer">
+                ¿No tienes cuenta? <a href="{% url 'registro' %}">Crear cuenta</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
